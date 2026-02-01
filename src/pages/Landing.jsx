@@ -30,6 +30,7 @@ export default function Landing() {
       </section>
 
       <footer>
+        <p>Where Fashion Meets Intelligence</p>
         © 2026 WearWiser – AI Fashion Stylist
       </footer>
     </div>

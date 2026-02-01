@@ -114,6 +114,14 @@ body {
 .images img:hover {
   transform: scale(1.05);
 }
+footer p{
+  font-family: poppins ;
+  font-size: 40px;
+  color: #f2a679;
+  margin: 0;
+  line-height: 1;
+}
+
 
 footer {
   text-align: center;
