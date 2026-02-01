@@ -121,3 +121,11 @@ footer {
   opacity: 0.7;
   color: white;
 }
+
+.profile-pic {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #ff4d6d;
+}
