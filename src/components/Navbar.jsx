@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/landing.css";
-import logo from "../assets/landing/backgroundimg.png";
+import logo from "../assets/landing/logo.jpeg";
 
 export default function Navbar() {
   return (
