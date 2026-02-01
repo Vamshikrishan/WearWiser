@@ -26,7 +26,19 @@ body {
 }
 
 .hero h1 {
-  font-size: 60px;
+  font-family: 'cooper black';
+  font-size: 125px;
+  color: white;
+  margin: 0;
+  line-height: 1;
+}
+
+.hero h4 {
+  font-family: 'Brush Script MT', cursive;
+  font-size: 40px;
+  color: #f2a679;
+  margin: 0;
+  line-height: 1;
 }
 
 .hero p {

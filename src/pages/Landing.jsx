@@ -8,11 +8,8 @@ export default function Landing() {
       <Navbar />
 
       <section className="hero">
-        <h1>AI Fashion Stylist</h1>
-        <p>
-          Discover outfits that perfectly match your body type, lifestyle,
-          and personality.
-        </p>
+        <h1>WearWiser</h1>
+        <h4>AI Fashion Stylist</h4>
 
         <div className="hero-buttons">
           <button className="btn-primary">Get Started</button>
