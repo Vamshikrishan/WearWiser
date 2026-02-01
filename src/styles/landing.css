@@ -122,10 +122,43 @@ footer {
   color: white;
 }
 
+.profile-wrapper {
+  position: relative;
+}
+
 .profile-pic {
   width: 42px;
   height: 42px;
   border-radius: 50%;
   cursor: pointer;
-  border: 2px solid #ff4d6d;
+  border: 2px solid #ffffff;
 }
+
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: 55px;
+  background: rgba(0, 0, 0, 0.85);
+  border-radius: 10px;
+  padding: 10px;
+  min-width: 160px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+.user-name {
+  color: #fff;
+  font-size: 14px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: #ffffff;
+  color: black;
+}
+
