@@ -2,7 +2,9 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import "../styles/landing.css";
 import bgImage from "../assets/landing/backgroundimg.png";
-
+import hero1 from "../assets/landing/hero1.jpeg";
+import hero2 from "../assets/landing/hero2.jpeg";
+import hero3 from "../assets/landing/hero3.jpeg";
 
 export default function Landing() {
   return (
@@ -19,9 +21,9 @@ export default function Landing() {
       </section>
 
       <section className="images">
-        <img src="/hero1.jpg" alt="fashion" />
-        <img src="/hero2.jpg" alt="fashion" />
-        <img src="/hero3.jpg" alt="fashion" />
+        <img src={hero2} alt="fashion" />
+        <img src={hero1} alt="fashion" />
+        <img src={hero3} alt="fashion" />
       </section>
 
       <footer>
