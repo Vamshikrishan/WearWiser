@@ -5,6 +5,7 @@ import bgImage from "../assets/landing/backgroundimg1.jpeg";
 import hero1 from "../assets/landing/hero1.jpeg";
 import hero2 from "../assets/landing/hero2.jpeg";
 import hero3 from "../assets/landing/hero3.jpeg";
+import heroin1 from "../assets/landing/heroin1.jpeg";
 
 export default function Landing() {
   return (
@@ -23,7 +24,8 @@ export default function Landing() {
       <section className="images">
         <img src={hero2} alt="fashion" />
         <img src={hero1} alt="fashion" />
-        <img src={hero3} alt="fashion" />
+        <img src={heroin1} alt="fashion" />
+        {/* <img src={hero3} alt="fashion" /> */}
       </section>
 
       <footer>
