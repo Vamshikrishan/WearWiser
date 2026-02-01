@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import "../styles/landing.css";
-import bgImage from "../assets/landing/backgroundimg.png";
+import bgImage from "../assets/landing/backgroundimg1.jpeg";
 import hero1 from "../assets/landing/hero1.jpeg";
 import hero2 from "../assets/landing/hero2.jpeg";
 import hero3 from "../assets/landing/hero3.jpeg";
