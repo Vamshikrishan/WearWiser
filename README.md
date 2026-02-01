@@ -1,1 +1,1 @@
-# StyleAI-Intelligent_Fashion_Recommendation_Platform
+# WearWiser
