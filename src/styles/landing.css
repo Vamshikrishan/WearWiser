@@ -1,28 +1,55 @@
 body {
   margin: 0;
-  font-family: "Poppins", sans-serif;
-  background: linear-gradient(120deg, #0f172a, #1e293b);
-  color: white;
+  background: black;
 }
 
 .navbar {
   display: flex;
   justify-content: space-between;
   padding: 20px 60px;
+  background: transparent;
 }
 
 .logo {
-  font-size: 28px;
-  font-weight: 700;
+  height: 50px;
 }
 
 .nav-buttons button {
   margin-left: 15px;
 }
 
+.landing-wrapper {
+  min-height: 100vh;
+  width: 100%;
+
+  background-image: url("../assets/landing/backgroundimg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* .landing-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 0;
+} */
+
+/* .landing-wrapper * {
+  position: relative;
+  z-index: 1;
+} */
+
 .hero {
+ min-height: calc(100vh - 120px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   text-align: center;
-  padding: 120px 20px;
 }
 
 .hero h1 {

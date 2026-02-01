@@ -1,12 +1,13 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import "../styles/landing.css";
+import bgImage from "../assets/landing/backgroundimg.png";
+
 
 export default function Landing() {
   return (
-    <>
+     <div className="landing-wrapper">
       <Navbar />
-
       <section className="hero">
         <h1>WearWiser</h1>
         <h4>AI Fashion Stylist</h4>
@@ -26,6 +27,6 @@ export default function Landing() {
       <footer>
         © 2026 WearWiser – AI Fashion Stylist
       </footer>
-    </>
+    </div>
   );
 }

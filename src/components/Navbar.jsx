@@ -1,10 +1,11 @@
 import React from "react";
 import "../styles/landing.css";
+import logo from "../assets/landing/backgroundimg.png";
 
 export default function Navbar() {
   return (
     <nav className="navbar">
-      <h2 className="logo">WearWiser</h2>
+      <img src={logo} alt="WearWiser Logo" className="logo" />
 
       <div className="nav-buttons">
         <button className="btn-outline">Login</button>
