@@ -69,21 +69,36 @@
     rgba(0, 0, 0, 0.55)
   ),
   url("../assets/landing/backgroundimg1.jpeg") center/cover no-repeat;
-  padding: 120px 60px;
+  padding: 80px 60px;
   color: #fff;
 }
 
 /* TITLE */
-.profile-title {
+/* BRAND TITLE */
+.brand-title {
+  font-family: 'cooper black';
   text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 10px;
+  font-size: 80px;
+  color: white;
+  margin: 0;
+  line-height: 1;
 }
 
+/* MAIN PAGE TITLE */
+.profile-title {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 500;
+  margin-bottom: 1px;
+}
+
+/* SUBTITLE */
 .profile-subtitle {
+  font-size: 1.2rem;
+  font-weight: 500;
   text-align: center;
   opacity: 0.8;
-  margin-bottom: 50px;
+  margin-bottom: 60px;
 }
 
 /* TWO CARD LAYOUT */
@@ -96,7 +111,7 @@
 
 /* GLASS CARD */
 .glass {
-  width: 380px;
+  width: 470px;
   padding: 30px;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.12);
@@ -144,13 +159,12 @@
   font-size: 1rem;
   cursor: pointer;
   transition: transform 0.2s ease;
-  width: 70%;
-  max-width: 700px;
-  margin: 70px auto 30px;
+  width: 50%;
+  max-width: 450px;
+  margin: 50px auto 30px;
   display: block;
   height: 55px;
   font-size: 1.1rem;
-  border-radius: 40px;
 }
 
 .generate-btn:hover {

@@ -29,6 +29,7 @@ export default function UserProfile() {
     preferredStyle: "",
     occasion: "",
     accessories: "",
+    Shoe: "",
     description: ""
   });
 
@@ -71,7 +72,9 @@ export default function UserProfile() {
   <div className="profile-container">
 
     {/* PAGE TITLE */}
-    <h1 className="profile-title">Create Your Style Profile</h1>
+    <h1 className="brand-title">WearWiser</h1>
+    <h2 className="profile-title">Discover Your Perfect Style</h2>
+
     <p className="profile-subtitle">
       Tell WearWiser about you to get personalized outfits.
     </p>
@@ -210,6 +213,17 @@ export default function UserProfile() {
           required
         >
           <option value="">Add Accessories?</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+
+        <select
+          name="Shoe"
+          value={stylePreferences.Shoe}
+          onChange={handleStyleChange}
+          required
+        >
+          <option value="">Shoe?</option>
           <option value="yes">Yes</option>
           <option value="no">No</option>
         </select>
