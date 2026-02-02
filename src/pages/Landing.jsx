@@ -7,8 +7,11 @@ import hero2 from "../assets/landing/hero2.jpeg";
 import hero3 from "../assets/landing/hero3.jpeg";
 import heroin1 from "../assets/landing/heroin1.jpeg";
 import heroin2 from "../assets/landing/heroin2.jpeg";
+import { useAuth } from "../context/AuthContext";
+
 
 export default function Landing() {
+  const { user } = useAuth();
   return (
      <div className="landing-wrapper">
       <Navbar />
@@ -17,8 +20,11 @@ export default function Landing() {
         <h4>AI Fashion Stylist</h4>
 
         <div className="hero-buttons">
-          <button className="btn-primary">Get Started</button>
+        <button className="btn-primary">Get Started</button>
+
+        {!user && (
           <button className="btn-outline">Continue as Guest</button>
+        )}
         </div>
       </section>
 
