@@ -5,39 +5,67 @@ import "../styles/profile.css";
 export default function UserProfile() {
   const { user } = useAuth();
 
-  // form state
-  const [formData, setFormData] = useState({
+  /* =======================
+     PERSONAL INFORMATION
+     (Saved + Auto-filled)
+  ======================= */
+  const [personalInfo, setPersonalInfo] = useState({
     nickname: "",
-    ageGroup: "",
     gender: "",
-    height: "",
+    ageGroup: "",
+    heightCm: "",
     bodyType: "",
-    topSize: "",
-    bottomSize: "",
-    shoeSize: "",
-    occupation: "",
-    occasion: ""
+    image: null,
+    imagePreview: null
+  });
+
+  /* =======================
+     STYLE PREFERENCES
+     (Not saved)
+  ======================= */
+  const [stylePreferences, setStylePreferences] = useState({
+    preferredStyle: "",
+    occasion: "",
+    accessories: "",
+    description: ""
   });
 
   if (!user) {
-    return (
-      <div className="profile-guard">
-        Please login to access this page.
-      </div>
-    );
+    return <div className="profile-guard">Please login</div>;
   }
 
-  // handle input change
-  const handleChange = (e) => {
+  /* ===== Handlers ===== */
+
+  const handlePersonalChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setPersonalInfo(prev => ({
       ...prev,
       [name]: value
     }));
   };
 
+  const handleStyleChange = (e) => {
+    const { name, value } = e.target;
+    setStylePreferences(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setPersonalInfo(prev => ({
+      ...prev,
+      image: file,
+      imagePreview: URL.createObjectURL(file)
+    }));
+  };
+
   return (
     <div className="profile-page">
+
       {/* HEADER */}
       <div className="profile-header">
         <img src={user.photoURL} alt="profile" />
@@ -47,100 +75,149 @@ export default function UserProfile() {
         </div>
       </div>
 
-      {/* FORM */}
+      {/* =======================
+          PERSONAL INFORMATION
+      ======================= */}
       <div className="profile-form">
-
-        <h3>Basic Information</h3>
+        <h3>Personal Information</h3>
 
         <input
           type="text"
           name="nickname"
-          placeholder="Profile Nickname"
-          value={formData.nickname}
-          onChange={handleChange}
+          placeholder="Nick Name"
+          value={personalInfo.nickname}
+          onChange={handlePersonalChange}
+          required
         />
 
-        <select name="ageGroup" value={formData.ageGroup} onChange={handleChange}>
-          <option value="">Age Group</option>
-          <option value="teen">Teen</option>
-          <option value="adult">Adult</option>
-          <option value="senior">Senior</option>
-        </select>
-
-        <select name="gender" value={formData.gender} onChange={handleChange}>
+        <select
+          name="gender"
+          value={personalInfo.gender}
+          onChange={handlePersonalChange}
+          required
+        >
           <option value="">Gender</option>
           <option value="male">Male</option>
           <option value="female">Female</option>
-          <option value="other">Other</option>
+          <option value="others">Others</option>
         </select>
 
-        <h3>Body Information</h3>
+        {/* Image Upload */}
+        <input
+          type="file"
+          accept="image/png, image/jpeg, image/jpg, image/webp"
+          onChange={handleImageUpload}
+          required
+        />
+
+        {personalInfo.imagePreview && (
+          <img
+            src={personalInfo.imagePreview}
+            alt="preview"
+            className="image-preview"
+          />
+        )}
+
+        <select
+          name="ageGroup"
+          value={personalInfo.ageGroup}
+          onChange={handlePersonalChange}
+          required
+        >
+          <option value="">Age Group</option>
+          <option value="teen">Teen (13–19)</option>
+          <option value="young-adult">Young Adult (20–29)</option>
+          <option value="adult">Adult (30–49)</option>
+          <option value="senior">Senior (50+)</option>
+        </select>
 
         <input
           type="number"
-          name="height"
+          name="heightCm"
           placeholder="Height (cm)"
-          value={formData.height}
-          onChange={handleChange}
+          value={personalInfo.heightCm}
+          onChange={handlePersonalChange}
+          required
         />
 
-        <select name="bodyType" value={formData.bodyType} onChange={handleChange}>
+        <select
+          name="bodyType"
+          value={personalInfo.bodyType}
+          onChange={handlePersonalChange}
+          required
+        >
           <option value="">Body Type</option>
-          <option value="slim">Slim</option>
-          <option value="athletic">Athletic</option>
-          <option value="average">Average</option>
-          <option value="heavy">Heavy</option>
+          <option value="slim">Slim / Lean</option>
+          <option value="fit">Fit / Muscular</option>
+          <option value="medium">Medium Build</option>
+          <option value="broad">Broad / Heavy Build</option>
         </select>
+      </div>
 
-        <h3>Clothing Sizes</h3>
+      {/* =======================
+          STYLE PREFERENCES
+      ======================= */}
+      <div className="profile-form">
+        <h3>Style Preferences</h3>
 
-        <select name="topSize" value={formData.topSize} onChange={handleChange}>
-          <option value="">Top Size</option>
-          <option value="S">S</option>
-          <option value="M">M</option>
-          <option value="L">L</option>
-          <option value="XL">XL</option>
-        </select>
-
-        <input
-          type="text"
-          name="bottomSize"
-          placeholder="Bottom Size (e.g. 32)"
-          value={formData.bottomSize}
-          onChange={handleChange}
-        />
-
-        <input
-          type="number"
-          name="shoeSize"
-          placeholder="Shoe Size"
-          value={formData.shoeSize}
-          onChange={handleChange}
-        />
-
-        <h3>Lifestyle</h3>
-
-        <input
-          type="text"
-          name="occupation"
-          placeholder="Occupation"
-          value={formData.occupation}
-          onChange={handleChange}
-        />
-
-        <select name="occasion" value={formData.occasion} onChange={handleChange}>
-          <option value="">Occasion</option>
-          <option value="casual">Casual</option>
-          <option value="office">Office</option>
-          <option value="party">Party</option>
+        <select
+          name="preferredStyle"
+          value={stylePreferences.preferredStyle}
+          onChange={handleStyleChange}
+          required
+        >
+          <option value="">Preferred Style</option>
+          <option value="casual">Casual Wear</option>
+          <option value="formal">Formal</option>
+          <option value="streetwear">Streetwear</option>
+          <option value="smart-casual">Smart Casual</option>
+          <option value="minimal">Minimal / Classic</option>
+          <option value="luxury">Luxury</option>
+          <option value="sporty">Sporty</option>
           <option value="traditional">Traditional</option>
-          <option value="gym">Gym</option>
+          <option value="trendy">Trendy</option>
         </select>
+
+        <select
+          name="occasion"
+          value={stylePreferences.occasion}
+          onChange={handleStyleChange}
+          required
+        >
+          <option value="">Occasion</option>
+          <option value="daily">Daily Wear</option>
+          <option value="office">Office</option>
+          <option value="party">Party Wear</option>
+          <option value="wedding">Wedding Style</option>
+          <option value="festive">Festive</option>
+          <option value="travel">Travel</option>
+          <option value="date">Date Night</option>
+          <option value="college">College</option>
+          <option value="gym">Gym / Sports</option>
+        </select>
+
+        <select
+          name="accessories"
+          value={stylePreferences.accessories}
+          onChange={handleStyleChange}
+          required
+        >
+          <option value="">Add Accessories?</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+
+        <textarea
+          name="description"
+          placeholder="Describe your style, colors you like, preferences..."
+          value={stylePreferences.description}
+          onChange={handleStyleChange}
+          required
+        />
 
         <button className="generate-btn">
           Generate Outfit
         </button>
-
       </div>
     </div>
   );
