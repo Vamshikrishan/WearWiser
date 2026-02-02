@@ -8,10 +8,13 @@ import hero3 from "../assets/landing/hero3.jpeg";
 import heroin1 from "../assets/landing/heroin1.jpeg";
 import heroin2 from "../assets/landing/heroin2.jpeg";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 
 
 export default function Landing() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   return (
      <div className="landing-wrapper">
       <Navbar />
@@ -20,8 +23,9 @@ export default function Landing() {
         <h4>AI Fashion Stylist</h4>
 
         <div className="hero-buttons">
-        <button className="btn-primary">Get Started</button>
-
+        <button
+          className="btn-primary"
+          onClick={() => navigate("/profile")}>Get Started</button>
         {!user && (
           <button className="btn-outline">Continue as Guest</button>
         )}
