@@ -68,9 +68,8 @@ export default function UserProfile() {
 
   return (
     <>
-    <Navbar />
-  <div className="profile-container">
-
+    <div className="profile-container">
+      <Navbar />
     {/* PAGE TITLE */}
     <h1 className="brand-title">WearWiser</h1>
     <h2 className="profile-title">Discover Your Perfect Style</h2>

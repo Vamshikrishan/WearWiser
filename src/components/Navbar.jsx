@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../styles/landing.css";
-import logo from "../assets/landing/logo.jpeg";
+import logo from "../assets/landing/logo2.png";
 
 import { signInWithPopup, signOut } from "firebase/auth";
 import { auth, googleProvider } from "../firebase/firebase";
