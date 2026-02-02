@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import "../styles/profile.css";
+import Navbar from "../components/Navbar";
+
 
 export default function UserProfile() {
   const { user } = useAuth();
@@ -64,21 +66,25 @@ export default function UserProfile() {
   };
 
   return (
-    <div className="profile-page">
+    <>
+    <Navbar />
+  <div className="profile-container">
 
-      {/* HEADER */}
-      <div className="profile-header">
-        <img src={user.photoURL} alt="profile" />
-        <div>
-          <h2>{user.displayName}</h2>
-          <p>{user.email}</p>
-        </div>
-      </div>
+    {/* PAGE TITLE */}
+    <h1 className="profile-title">Create Your Style Profile</h1>
+    <p className="profile-subtitle">
+      Tell WearWiser about you to get personalized outfits.
+    </p>
+
+    {/* USER HEADER */}
+    {/* TWO CARD LAYOUT */}
+    <div className="profile-cards">
 
       {/* =======================
           PERSONAL INFORMATION
+          (Saved + Auto-filled)
       ======================= */}
-      <div className="profile-form">
+      <div className="profile-form glass">
         <h3>Personal Information</h3>
 
         <input
@@ -102,7 +108,7 @@ export default function UserProfile() {
           <option value="others">Others</option>
         </select>
 
-        {/* Image Upload */}
+        {/* IMAGE UPLOAD */}
         <input
           type="file"
           accept="image/png, image/jpeg, image/jpg, image/webp"
@@ -156,8 +162,9 @@ export default function UserProfile() {
 
       {/* =======================
           STYLE PREFERENCES
+          (Not Saved)
       ======================= */}
-      <div className="profile-form">
+      <div className="profile-form glass">
         <h3>Style Preferences</h3>
 
         <select
@@ -214,11 +221,14 @@ export default function UserProfile() {
           onChange={handleStyleChange}
           required
         />
-
-        <button className="generate-btn">
-          Generate Outfit
-        </button>
       </div>
+
     </div>
-  );
+    {/* GENERATE BUTTON */}
+    <button className="generate-btn center-btn">
+      Generate Outfit
+    </button>
+  </div>
+   </>
+);
 }
