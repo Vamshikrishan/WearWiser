@@ -100,6 +100,21 @@ export default function UserProfile() {
   // NEXT PHASE: redirect to output page
 };
 
+const handleGenerateOutfit = async () => {
+  // 1. Ensure personal info is saved
+  await handleSavePersonalInfo();
+
+  // 2. Use BOTH data sources
+  const payload = {
+    personalInfo,
+    stylePreferences
+  };
+
+  console.log("Generating outfit with:", payload);
+
+  // Later → call AI / recommendation API here
+};
+
 
   return (
     <>
@@ -273,7 +288,7 @@ export default function UserProfile() {
 
     </div>
     {/* GENERATE BUTTON */}
-    <button className="generate-btn center-btn" onClick={handleGenerate}>
+    <button className="generate-btn center-btn" onClick={handleGenerateOutfit}>
       Generate Outfit
     </button>
   </div>
