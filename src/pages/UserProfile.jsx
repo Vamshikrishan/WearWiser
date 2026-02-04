@@ -3,7 +3,8 @@ import { useAuth } from "../context/AuthContext";
 import "../styles/profile.css";
 import Navbar from "../components/Navbar";
 import { useEffect } from "react";
-import { saveUserProfile, getUserProfile } from "../services/userProfileService";
+// import { saveUserProfile, getUserProfile } from "../services/userProfileService";
+import { saveUserProfile } from "../services/userProfileService";
 
 
 export default function UserProfile() {
@@ -115,8 +116,24 @@ const handleGenerateOutfit = async () => {
   // Later → call AI / recommendation API here
 };
 
+const handleSavePersonalInfo = async () => {
+  try {
+    if (!user?.uid) return;
+
+    await saveUserProfile(user.uid, {
+      ...personalInfo,
+      updatedAt: new Date()
+    });
+
+    console.log("Personal info saved successfully");
+  } catch (error) {
+    console.error("Error saving personal info:", error);
+  }
+};
+
 
   return (
+    
     <>
     <div className="profile-container">
       <Navbar />
@@ -288,7 +305,7 @@ const handleGenerateOutfit = async () => {
 
     </div>
     {/* GENERATE BUTTON */}
-    <button className="generate-btn center-btn" onClick={handleGenerateOutfit}>
+    <button className="generate-btn center-btn" onClick={() => {handleSavePersonalInfo();handleGenerateOutfit();}}>
       Generate Outfit
     </button>
   </div>
