@@ -1,30 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Navbar from "../components/Navbar";
 import { useAuth } from "../context/AuthContext";
 import "../styles/profile.css";
-import Navbar from "../components/Navbar";
-import { useEffect } from "react";
-// import { saveUserProfile, getUserProfile } from "../services/userProfileService";
-import { saveUserProfile } from "../services/userProfileService";
 
+import {
+  saveUserProfile,
+  getUserProfile
+} from "../services/userProfileService";
 
 export default function UserProfile() {
   const { user } = useAuth();
-
-  useEffect(() => {
-  const loadProfile = async () => {
-    if (!user) return;
-
-    const savedProfile = await getUserProfile(user.uid);
-    if (savedProfile) {
-      setPersonalInfo(prev => ({
-        ...prev,
-        ...savedProfile
-      }));
-    }
-  };
-
-  loadProfile();
-}, [user]);
 
   /* =======================
      PERSONAL INFORMATION
@@ -37,12 +22,12 @@ export default function UserProfile() {
     heightCm: "",
     bodyType: "",
     image: null,
-    imagePreview: null
+    imagePreview: ""
   });
 
   /* =======================
      STYLE PREFERENCES
-     (Not saved)
+     (Not Saved)
   ======================= */
   const [stylePreferences, setStylePreferences] = useState({
     preferredStyle: "",
@@ -52,11 +37,36 @@ export default function UserProfile() {
     description: ""
   });
 
+  /* =======================
+     LOAD SAVED PROFILE
+  ======================= */
+  useEffect(() => {
+    const loadProfile = async () => {
+      if (!user?.uid) return;
+
+      try {
+        const savedProfile = await getUserProfile(user.uid);
+        if (savedProfile) {
+          setPersonalInfo(prev => ({
+            ...prev,
+            ...savedProfile
+          }));
+        }
+      } catch (error) {
+        console.error("Failed to load profile:", error);
+      }
+    };
+
+    loadProfile();
+  }, [user]);
+
   if (!user) {
     return <div className="profile-guard">Please login</div>;
   }
 
-  /* ===== Handlers ===== */
+  /* =======================
+     HANDLERS
+  ======================= */
 
   const handlePersonalChange = (e) => {
     const { name, value } = e.target;
@@ -85,230 +95,218 @@ export default function UserProfile() {
     }));
   };
 
-  const handleGenerate = async () => {
-  if (!user) return;
-
-  await saveUserProfile(user.uid, {
-    nickname: personalInfo.nickname,
-    gender: personalInfo.gender,
-    ageGroup: personalInfo.ageGroup,
-    heightCm: personalInfo.heightCm,
-    bodyType: personalInfo.bodyType,
-    imageUrl: personalInfo.imagePreview || "",
-    updatedAt: new Date()
-  });
-
-  // NEXT PHASE: redirect to output page
-};
-
-const handleGenerateOutfit = async () => {
-  // 1. Ensure personal info is saved
-  await handleSavePersonalInfo();
-
-  // 2. Use BOTH data sources
-  const payload = {
-    personalInfo,
-    stylePreferences
-  };
-
-  console.log("Generating outfit with:", payload);
-
-  // Later → call AI / recommendation API here
-};
-
-const handleSavePersonalInfo = async () => {
-  try {
+  /* =======================
+     SAVE PERSONAL INFO
+  ======================= */
+  const handleSavePersonalInfo = async () => {
     if (!user?.uid) return;
 
-    await saveUserProfile(user.uid, {
-      ...personalInfo,
-      updatedAt: new Date()
-    });
+    try {
+      await saveUserProfile(user.uid, {
+        nickname: personalInfo.nickname,
+        gender: personalInfo.gender,
+        ageGroup: personalInfo.ageGroup,
+        heightCm: personalInfo.heightCm,
+        bodyType: personalInfo.bodyType,
+        imageUrl: personalInfo.imagePreview || "",
+        updatedAt: new Date()
+      });
 
-    console.log("Personal info saved successfully");
-  } catch (error) {
-    console.error("Error saving personal info:", error);
-  }
-};
+      console.log("✅ Personal info saved");
+    } catch (error) {
+      console.error("❌ Error saving personal info:", error);
+    }
+  };
 
+  /* =======================
+     GENERATE OUTFIT
+  ======================= */
+  const handleGenerateOutfit = async () => {
+    await handleSavePersonalInfo();
 
+    const payload = {
+      personalInfo,
+      stylePreferences
+    };
+
+    console.log("🧠 Generating outfit with:", payload);
+
+    // NEXT PHASE:
+    // send `payload` to AI / recommendation API
+  };
+
+  /* =======================
+     UI
+  ======================= */
   return (
-    
-    <>
     <div className="profile-container">
       <Navbar />
-    {/* PAGE TITLE */}
-    <h1 className="brand-title">WearWiser</h1>
-    <h2 className="profile-title">Discover Your Perfect Style</h2>
 
-    <p className="profile-subtitle">
-      Tell WearWiser about you to get personalized outfits.
-    </p>
+      {/* PAGE HEADER */}
+      <h1 className="brand-title">WearWiser</h1>
+      <h2 className="profile-title">Discover Your Perfect Style</h2>
+      <p className="profile-subtitle">
+        Tell WearWiser about you to get personalized outfits.
+      </p>
 
-    {/* USER HEADER */}
-    {/* TWO CARD LAYOUT */}
-    <div className="profile-cards">
+      {/* TWO COLUMN LAYOUT */}
+      <div className="profile-cards">
 
-      {/* =======================
-          PERSONAL INFORMATION
-          (Saved + Auto-filled)
-      ======================= */}
-      <div className="profile-form glass">
-        <h3>Personal Information</h3>
+        {/* PERSONAL INFORMATION */}
+        <div className="profile-form glass">
+          <h3>Personal Information</h3>
 
-        <input
-          type="text"
-          name="nickname"
-          placeholder="Nick Name"
-          value={personalInfo.nickname}
-          onChange={handlePersonalChange}
-          required
-        />
-
-        <select
-          name="gender"
-          value={personalInfo.gender}
-          onChange={handlePersonalChange}
-          required
-        >
-          <option value="">Gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="others">Others</option>
-        </select>
-
-        {/* IMAGE UPLOAD */}
-        <input
-          type="file"
-          accept="image/png, image/jpeg, image/jpg, image/webp"
-          onChange={handleImageUpload}
-          required
-        />
-
-        {personalInfo.imagePreview && (
-          <img
-            src={personalInfo.imagePreview}
-            alt="preview"
-            className="image-preview"
+          <input
+            type="text"
+            name="nickname"
+            placeholder="Nick Name"
+            value={personalInfo.nickname}
+            onChange={handlePersonalChange}
+            required
           />
-        )}
 
-        <select
-          name="ageGroup"
-          value={personalInfo.ageGroup}
-          onChange={handlePersonalChange}
-          required
-        >
-          <option value="">Age Group</option>
-          <option value="teen">Teen (13–19)</option>
-          <option value="young-adult">Young Adult (20–29)</option>
-          <option value="adult">Adult (30–49)</option>
-          <option value="senior">Senior (50+)</option>
-        </select>
+          <select
+            name="gender"
+            value={personalInfo.gender}
+            onChange={handlePersonalChange}
+            required
+          >
+            <option value="">Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="others">Others</option>
+          </select>
 
-        <input
-          type="number"
-          name="heightCm"
-          placeholder="Height (cm)"
-          value={personalInfo.heightCm}
-          onChange={handlePersonalChange}
-          required
-        />
+          <input
+            type="file"
+            accept="image/png, image/jpeg, image/jpg, image/webp"
+            onChange={handleImageUpload}
+            required
+          />
 
-        <select
-          name="bodyType"
-          value={personalInfo.bodyType}
-          onChange={handlePersonalChange}
-          required
-        >
-          <option value="">Body Type</option>
-          <option value="slim">Slim / Lean</option>
-          <option value="fit">Fit / Muscular</option>
-          <option value="medium">Medium Build</option>
-          <option value="broad">Broad / Heavy Build</option>
-        </select>
+          {personalInfo.imagePreview && (
+            <img
+              src={personalInfo.imagePreview}
+              alt="preview"
+              className="image-preview"
+            />
+          )}
+
+          <select
+            name="ageGroup"
+            value={personalInfo.ageGroup}
+            onChange={handlePersonalChange}
+            required
+          >
+            <option value="">Age Group</option>
+            <option value="teen">Teen (13–19)</option>
+            <option value="young-adult">Young Adult (20–29)</option>
+            <option value="adult">Adult (30–49)</option>
+            <option value="senior">Senior (50+)</option>
+          </select>
+
+          <input
+            type="number"
+            name="heightCm"
+            placeholder="Height (cm)"
+            value={personalInfo.heightCm}
+            onChange={handlePersonalChange}
+            required
+          />
+
+          <select
+            name="bodyType"
+            value={personalInfo.bodyType}
+            onChange={handlePersonalChange}
+            required
+          >
+            <option value="">Body Type</option>
+            <option value="slim">Slim / Lean</option>
+            <option value="fit">Fit / Muscular</option>
+            <option value="medium">Medium Build</option>
+            <option value="broad">Broad / Heavy Build</option>
+          </select>
+        </div>
+
+        {/* STYLE PREFERENCES */}
+        <div className="profile-form glass">
+          <h3>Style Preferences</h3>
+
+          <select
+            name="preferredStyle"
+            value={stylePreferences.preferredStyle}
+            onChange={handleStyleChange}
+            required
+          >
+            <option value="">Preferred Style</option>
+            <option value="casual">Casual Wear</option>
+            <option value="formal">Formal</option>
+            <option value="streetwear">Streetwear</option>
+            <option value="smart-casual">Smart Casual</option>
+            <option value="minimal">Minimal / Classic</option>
+            <option value="luxury">Luxury</option>
+            <option value="sporty">Sporty</option>
+            <option value="traditional">Traditional</option>
+            <option value="trendy">Trendy</option>
+          </select>
+
+          <select
+            name="occasion"
+            value={stylePreferences.occasion}
+            onChange={handleStyleChange}
+            required
+          >
+            <option value="">Occasion</option>
+            <option value="daily">Daily Wear</option>
+            <option value="office">Office</option>
+            <option value="party">Party Wear</option>
+            <option value="wedding">Wedding Style</option>
+            <option value="festive">Festive</option>
+            <option value="travel">Travel</option>
+            <option value="date">Date Night</option>
+            <option value="college">College</option>
+            <option value="gym">Gym / Sports</option>
+          </select>
+
+          <select
+            name="accessories"
+            value={stylePreferences.accessories}
+            onChange={handleStyleChange}
+            required
+          >
+            <option value="">Add Accessories?</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+
+          <select
+            name="Shoe"
+            value={stylePreferences.Shoe}
+            onChange={handleStyleChange}
+            required
+          >
+            <option value="">Shoe?</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+
+          <textarea
+            name="description"
+            placeholder="Describe your style, colors you like, preferences..."
+            value={stylePreferences.description}
+            onChange={handleStyleChange}
+            required
+          />
+        </div>
       </div>
 
-      {/* =======================
-          STYLE PREFERENCES
-          (Not Saved)
-      ======================= */}
-      <div className="profile-form glass">
-        <h3>Style Preferences</h3>
-
-        <select
-          name="preferredStyle"
-          value={stylePreferences.preferredStyle}
-          onChange={handleStyleChange}
-          required
-        >
-          <option value="">Preferred Style</option>
-          <option value="casual">Casual Wear</option>
-          <option value="formal">Formal</option>
-          <option value="streetwear">Streetwear</option>
-          <option value="smart-casual">Smart Casual</option>
-          <option value="minimal">Minimal / Classic</option>
-          <option value="luxury">Luxury</option>
-          <option value="sporty">Sporty</option>
-          <option value="traditional">Traditional</option>
-          <option value="trendy">Trendy</option>
-        </select>
-
-        <select
-          name="occasion"
-          value={stylePreferences.occasion}
-          onChange={handleStyleChange}
-          required
-        >
-          <option value="">Occasion</option>
-          <option value="daily">Daily Wear</option>
-          <option value="office">Office</option>
-          <option value="party">Party Wear</option>
-          <option value="wedding">Wedding Style</option>
-          <option value="festive">Festive</option>
-          <option value="travel">Travel</option>
-          <option value="date">Date Night</option>
-          <option value="college">College</option>
-          <option value="gym">Gym / Sports</option>
-        </select>
-
-        <select
-          name="accessories"
-          value={stylePreferences.accessories}
-          onChange={handleStyleChange}
-          required
-        >
-          <option value="">Add Accessories?</option>
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </select>
-
-        <select
-          name="Shoe"
-          value={stylePreferences.Shoe}
-          onChange={handleStyleChange}
-          required
-        >
-          <option value="">Shoe?</option>
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </select>
-
-        <textarea
-          name="description"
-          placeholder="Describe your style, colors you like, preferences..."
-          value={stylePreferences.description}
-          onChange={handleStyleChange}
-          required
-        />
-      </div>
-
+      {/* GENERATE BUTTON */}
+      <button
+        className="generate-btn center-btn"
+        onClick={handleGenerateOutfit}
+      >
+        Generate Outfit
+      </button>
     </div>
-    {/* GENERATE BUTTON */}
-    <button className="generate-btn center-btn" onClick={() => {handleSavePersonalInfo();handleGenerateOutfit();}}>
-      Generate Outfit
-    </button>
-  </div>
-   </>
-);
+  );
 }
