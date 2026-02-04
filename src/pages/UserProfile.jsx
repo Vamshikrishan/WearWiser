@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { useAuth } from "../context/AuthContext";
 import "../styles/profile.css";
+import { useNavigate } from "react-router-dom";
+import { generateOutfit } from "../services/outfitGenerator";
+
 
 import {
   saveUserProfile,
@@ -134,6 +137,8 @@ export default function UserProfile() {
     // NEXT PHASE:
     // send `payload` to AI / recommendation API
   };
+
+  const navigate = useNavigate();
 
   /* =======================
      UI
@@ -303,10 +308,19 @@ export default function UserProfile() {
       {/* GENERATE BUTTON */}
       <button
         className="generate-btn center-btn"
-        onClick={handleGenerateOutfit}
+        onClick={async () => {
+          await handleSavePersonalInfo();
+
+          const outfit = generateOutfit(personalInfo, stylePreferences);
+
+          navigate("/outfit-result", {
+            state: { outfit }
+          });
+        }}
       >
         Generate Outfit
       </button>
+
     </div>
   );
 }

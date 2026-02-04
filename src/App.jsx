@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./pages/Landing";
 import { AuthProvider } from "./context/AuthContext";
 import UserProfile from "./pages/UserProfile";
+import OutfitResult from "./pages/OutfitResult";
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/outfit-result" element={<OutfitResult />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
