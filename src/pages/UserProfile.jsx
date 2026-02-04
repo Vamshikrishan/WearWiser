@@ -310,14 +310,10 @@ export default function UserProfile() {
         className="generate-btn center-btn"
         onClick={async () => {
           await handleSavePersonalInfo();
-
           const outfit = generateOutfit(personalInfo, stylePreferences);
-
           navigate("/outfit-result", {
-            state: { outfit }
-          });
-        }}
-      >
+            state: { outfit }});
+        }}>
         Generate Outfit
       </button>
 
