@@ -2,10 +2,28 @@ import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import "../styles/profile.css";
 import Navbar from "../components/Navbar";
+import { useEffect } from "react";
+import { saveUserProfile, getUserProfile } from "../services/userProfileService";
 
 
 export default function UserProfile() {
   const { user } = useAuth();
+
+  useEffect(() => {
+  const loadProfile = async () => {
+    if (!user) return;
+
+    const savedProfile = await getUserProfile(user.uid);
+    if (savedProfile) {
+      setPersonalInfo(prev => ({
+        ...prev,
+        ...savedProfile
+      }));
+    }
+  };
+
+  loadProfile();
+}, [user]);
 
   /* =======================
      PERSONAL INFORMATION
@@ -65,6 +83,23 @@ export default function UserProfile() {
       imagePreview: URL.createObjectURL(file)
     }));
   };
+
+  const handleGenerate = async () => {
+  if (!user) return;
+
+  await saveUserProfile(user.uid, {
+    nickname: personalInfo.nickname,
+    gender: personalInfo.gender,
+    ageGroup: personalInfo.ageGroup,
+    heightCm: personalInfo.heightCm,
+    bodyType: personalInfo.bodyType,
+    imageUrl: personalInfo.imagePreview || "",
+    updatedAt: new Date()
+  });
+
+  // NEXT PHASE: redirect to output page
+};
+
 
   return (
     <>
@@ -238,7 +273,7 @@ export default function UserProfile() {
 
     </div>
     {/* GENERATE BUTTON */}
-    <button className="generate-btn center-btn">
+    <button className="generate-btn center-btn" onClick={handleGenerate}>
       Generate Outfit
     </button>
   </div>
